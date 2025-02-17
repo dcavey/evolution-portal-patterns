@@ -1,4 +1,9 @@
+import re
 import textwrap
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 WRAP_VARIABLE = 80
 TAB_AS_CHARS = "   "
@@ -29,45 +34,102 @@ Given the requirement for minimal coupling and the ability to integrate common f
 **Scenario 5: Micro Frontends** is a strong candidate. It allows for independent development and deployment of each website, minimizing the impact on existing websites. Additionally, it provides the flexibility to integrate common features at the portal level.
 """
 
-def format_chat(text):
-    lines = text.strip().split("\n")
-    chat_messages = []
-    current_message = []
-    current_speaker = ""
+def parse_chat(text):
+    """
+    Parse the raw chat text into a list of dictionaries with keys 'speaker' and 'message'.
+    
+    Only lines where the first character is alphanumeric (A-Z, a-z, 0-9) and followed by
+    letters, numbers, dashes, underscores, or spaces, then a colon, are considered as new messages.
+    This prevents Markdown lines (like "**Pros:**") from being misinterpreted.
+    """
+    pattern = re.compile(r"^(?P<speaker>[A-Za-z0-9][A-Za-z0-9\-\_ ]*):\s*(?P<message>.*)$")
+    messages = []
+    current_speaker = None
+    current_message_lines = []
+    
+    for line in text.splitlines():
+        # Preserve blank lines (they may indicate paragraph breaks)
+        if line.strip() == "":
+            if current_speaker is not None:
+                current_message_lines.append("")
+            continue
 
-    for line in lines:
-        line = line.rstrip()
-        if line.startswith("dirk-vandecavey_GCO2:") or line.startswith("GitHub Copilot:"):
-            if current_message:
-                # Wrap text but preserve Markdown formatting
-                wrapped_message = "\n".join(
-                    textwrap.fill(para, WRAP_VARIABLE) if not para.startswith("-") and not para.startswith("#") else para
-                    for para in "\n".join(current_message).split("\n")
-                )
-                # Apply TAB_AS_CHARS at the final stage
-                indented_message = "\n".join(TAB_AS_CHARS + line for line in wrapped_message.split("\n"))
-                chat_messages.append(f"**{current_speaker}**:\n\n{indented_message}")
-
-            current_speaker, new_message = line.split(":", 1)
-            current_message = [new_message.strip()]
+        match = pattern.match(line)
+        if match:
+            # Found a new speaker line.
+            if current_speaker is not None:
+                messages.append({
+                    "speaker": current_speaker,
+                    "message": "\n".join(current_message_lines).strip()
+                })
+            current_speaker = match.group("speaker").strip()
+            initial_msg = match.group("message").strip()
+            current_message_lines = [initial_msg] if initial_msg else []
         else:
-            current_message.append(line)
+            # Not a speaker line; append to the current message.
+            if current_speaker is not None:
+                current_message_lines.append(line)
+            else:
+                logging.warning("Line without a detected speaker: %s", line)
+    
+    # Append the last message if available.
+    if current_speaker is not None:
+        messages.append({
+            "speaker": current_speaker,
+            "message": "\n".join(current_message_lines).strip()
+        })
+    
+    return messages
 
-    # Process last message if it exists
-    if current_message:
-        wrapped_message = "\n".join(
-            textwrap.fill(para, WRAP_VARIABLE) if not para.startswith("-") and not para.startswith("#") else para
-            for para in "\n".join(current_message).split("\n")
-        )
-        indented_message = "\n".join(TAB_AS_CHARS + line for line in wrapped_message.split("\n"))
-        chat_messages.append(f"**{current_speaker}**:\n\n{indented_message}")
+def format_message_text(message):
+    """
+    Apply text wrapping to non-Markdown lines and indent the final message.
+    Markdown lines (starting with -, #, >, or ``` ) are left untouched.
+    """
+    lines = message.split("\n")
+    formatted_lines = []
+    
+    for line in lines:
+        stripped_line = line.lstrip()
+        if stripped_line.startswith(("-", "#", ">", "```")):
+            # Leave common Markdown indicators intact.
+            formatted_lines.append(line)
+        else:
+            if line.strip():
+                wrapped = textwrap.fill(line, WRAP_VARIABLE)
+                formatted_lines.append(wrapped)
+            else:
+                formatted_lines.append("")
+    
+    formatted_message = "\n".join(formatted_lines)
+    # Final indentation applied at the end.
+    indented_message = textwrap.indent(formatted_message, TAB_AS_CHARS)
+    return indented_message
 
-    return chat_messages
+def format_chat_messages(messages):
+    """
+    Format the list of message dictionaries into Markdown strings.
+    """
+    formatted = []
+    for entry in messages:
+        speaker = entry["speaker"]
+        message_text = entry["message"]
+        formatted_text = format_message_text(message_text)
+        formatted.append(f"**{speaker}**:\n\n{formatted_text}")
+    return formatted
 
-formatted_chat = format_chat(text)
+# Parse the raw text.
+chat_entries = parse_chat(text)
+logging.info("Parsed %d chat messages.", len(chat_entries))
 
-with open("OUTPUT.md", "w", encoding="utf-8") as file:
-    for message in formatted_chat:
-        file.write(f"{message}\n\n")
+# Format the parsed messages.
+formatted_chat = format_chat_messages(chat_entries)
 
-print("Formatted chat saved to OUTPUT.md")
+# Write the output to a file with error handling.
+try:
+    with open("OUTPUT.md", "w", encoding="utf-8") as file:
+        for message in formatted_chat:
+            file.write(f"{message}\n\n")
+    logging.info("Formatted chat saved to OUTPUT.md")
+except Exception as e:
+    logging.error("An error occurred while writing to the file: %s", e)
