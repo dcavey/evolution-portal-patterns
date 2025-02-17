@@ -5,7 +5,7 @@ import logging
 # Set up logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-WRAP_VARIABLE = 80
+WRAP_VARIABLE = 100
 TAB_AS_CHARS = "   "
 
 # Optional: Map speakers to emojis for a prettier look.
@@ -13,32 +13,6 @@ SPEAKER_EMOJIS = {
     "dirk-vandecavey_GCO2": "👤",
     "GitHub Copilot": "🤖"
 }
-
-text = """
-dirk-vandecavey_GCO2: Suggest possible scenarios to realize the solution to the problem stated in the requirements document. 
-
-GitHub Copilot: To realize the solution to the problem stated in the requirements document, you can consider the following scenarios:
-
-Each of these scenarios has its own advantages and trade-offs. Choose the one that best fits your requirements and development environment.
-
-dirk-vandecavey_GCO2: Provide pros and cons for each approach. 
-- minimal coupling ( no impact on existing websites is preferred)
-- integration of specific common features in the portal should be possible
-
-GitHub Copilot: ### Scenario 1: Single Page Application (SPA) with JavaScript Framework
-
-**Pros:**
-- **Rich User Experience**: Provides a dynamic and responsive user interface.
-- **Component Reusability**: Easy to reuse components across the portal.
-
-**Cons:**
-- **Initial Load Time**: May have a longer initial load time due to the size of the JavaScript bundle.
-- **SEO Challenges**: Requires additional configuration for SEO optimization.
-
-### Recommendation
-Given the requirement for minimal coupling and the ability to integrate common features, 
-**Scenario 5: Micro Frontends** is a strong candidate. It allows for independent development and deployment of each website, minimizing the impact on existing websites. Additionally, it provides the flexibility to integrate common features at the portal level.
-"""
 
 def parse_chat(text):
     """
@@ -51,40 +25,37 @@ def parse_chat(text):
     messages = []
     current_speaker = None
     current_message_lines = []
-    
+
+    def add_message(speaker, message_lines):
+        if speaker is not None:
+            messages.append({
+                "speaker": speaker,
+                "message": "\n".join(message_lines).strip()
+            })
+
     for line in text.splitlines():
-        # Preserve blank lines (they may indicate paragraph breaks)
-        if line.strip() == "":
+        if is_blank_line(line):
             if current_speaker is not None:
                 current_message_lines.append("")
             continue
 
         match = pattern.match(line)
         if match:
-            # Found a new speaker line.
-            if current_speaker is not None:
-                messages.append({
-                    "speaker": current_speaker,
-                    "message": "\n".join(current_message_lines).strip()
-                })
+            add_message(current_speaker, current_message_lines)
             current_speaker = match.group("speaker").strip()
             initial_msg = match.group("message").strip()
             current_message_lines = [initial_msg] if initial_msg else []
         else:
-            # Not a speaker line; append to the current message.
             if current_speaker is not None:
                 current_message_lines.append(line)
             else:
                 logging.warning("Line without a detected speaker: %s", line)
-    
-    # Append the last message if available.
-    if current_speaker is not None:
-        messages.append({
-            "speaker": current_speaker,
-            "message": "\n".join(current_message_lines).strip()
-        })
-    
+
+    add_message(current_speaker, current_message_lines)
     return messages
+
+def is_blank_line(line):
+    return line.strip() == ""
 
 def format_message_text(message):
     """
@@ -133,6 +104,15 @@ def format_chat_messages(messages):
         # Divider for clarity
         # formatted.append("---\n")
     return "\n".join(formatted)
+
+# Read the raw text from SAVED_CHAT.txt
+try:
+    with open("SAVED_CHAT.txt", "r", encoding="utf-8") as file:
+        text = file.read()
+    logging.info("Read chat text from SAVED_CHAT.txt")
+except Exception as e:
+    logging.error("An error occurred while reading the file: %s", e)
+    text = ""
 
 # Parse the raw text.
 chat_entries = parse_chat(text)
