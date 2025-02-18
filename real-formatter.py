@@ -6,13 +6,13 @@ import sys
 # Set up logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-WRAP_VARIABLE = 100
+WRAP_VARIABLE = 80
 TAB_AS_CHARS = "   "
 
 # Optional: Map speakers to emojis for a prettier look.
 SPEAKER_EMOJIS = {
     "dirk-vandecavey_GCO2": "👤",
-    "GitHub Copilot": "🤖"
+    "GitHub Copilot": "🤖",
 }
 
 def parse_chat(text):
@@ -136,7 +136,7 @@ def main(filename_base):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python chat-formatter.py <filename_base>")
+        print("Usage: python real-formatter.py <filename_base>")
     else:
         filename_base = sys.argv[1]
         main(filename_base)
