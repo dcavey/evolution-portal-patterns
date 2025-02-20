@@ -22,14 +22,19 @@
         nav a:hover {
             background-color: #555;
         }
+        .product {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
+            display: inline-block;
+            width: 200px;
+        }
         .button {
             background-color: #4CAF50;
             color: white;
             padding: 10px 15px;
             border: none;
             cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
         }
     </style>
 </head>
@@ -39,8 +44,15 @@
         <a href="/products">Products</a>
         <a href="/about">About</a>
     </nav>
-    <h1>Welcome to Our Store</h1>
-    <p><%= content %></p>
-    <a href="/products" class="button">View Products</a>
+    <h1>Our Products</h1>
+    <% products.forEach(product => { %>
+    <div class="product">
+        <h2><%= product.name %></h2>
+        <p>Price: <%= product.price %></p>
+        <form action="/cart">
+            <button type="submit" class="button">Add to Cart</button>
+        </form>
+    </div>
+    <% }) %>
 </body>
 </html>

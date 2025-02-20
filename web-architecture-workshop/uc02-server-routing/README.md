@@ -1,37 +1,18 @@
-# Server Routing Architecture
+# Server Routing (Dynamic Server-Rendered Applications)
 
-This project demonstrates the Server Routing architecture, which utilizes dynamic server-side rendering to generate pages based on user interactions. 
+## What it is
+Pages are generated dynamically on the server using routing logic.
 
-## Overview
-
-In a Server Routing application, each request to the server results in a new page being generated dynamically. This approach allows for the creation of dynamic content that can change based on user input or other factors, while still maintaining a clear URL structure.
+## How it works
+Although each navigation still results in a new full page load, the content is generated on the fly (e.g., via server-side templating).
 
 ## Characteristics
+- Dynamic content generation
+- Maintains URL-based navigation
+- Improved flexibility over static pages
 
-- **Dynamic Content Generation**: Pages are generated on-the-fly using server-side logic, allowing for personalized and context-aware content.
-- **URL-Based Navigation**: Each page has a unique URL, making it easy for users to bookmark and share links.
-- **Improved Flexibility**: Unlike static pages, server-rendered pages can adapt to different data inputs and user interactions.
-
-## Use Cases
-
-Server Routing is ideal for applications that require dynamic content, such as:
-
-- Content management systems (CMS)
-- E-commerce platforms
-- User dashboards and profiles
-
-## Getting Started
-
-To run this project, ensure you have Node.js installed. Then, navigate to the `server-routing` directory and run the following commands:
-
-1. Install dependencies:
-   ```
+## How to Run
+1. Navigate to the `uc2-server-routing` directory.
+2. Install dependencies:
+   ```sh
    npm install
-   ```
-
-2. Start the server:
-   ```
-   npm start
-   ```
-
-Visit `http://localhost:3000` in your browser to see the application in action.
