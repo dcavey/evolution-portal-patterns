@@ -1,12 +1,23 @@
-# AJAX-Enhanced MPAs Architecture
+# AJAX-Enhanced MPAs (Progressively Enhanced Interfaces)
 
-The AJAX-Enhanced Multi-Page Application (MPA) architecture represents an evolution of traditional multi-page applications by incorporating AJAX (Asynchronous JavaScript and XML) to enhance user experience. This approach allows for partial page updates without requiring a full page reload, bridging the gap between server-driven pages and client-side interactivity.
+## What it is
+Early attempts to improve user experience without overhauling the full MPA model. Uses AJAX to fetch data and update parts of the page without a full reload.
+
+## How it works
+After the initial HTML, CSS, and JavaScript files are loaded, the application can handle some interactions using AJAX to fetch data and update parts of the page dynamically.
 
 ## Characteristics
 
-- **Partial Page Updates**: Instead of reloading the entire page, only specific parts of the page are updated asynchronously. This leads to a smoother user experience.
-- **Improved Interactivity**: AJAX enables dynamic content loading, allowing users to interact with the application without the delays associated with full page reloads.
-- **Server Routing**: The application still maintains server-side routing for overall navigation, ensuring that users can bookmark and share specific URLs.
+- Improved user experience with dynamic content updates
+- No full-page reloads for navigation
+- Dependent on network availability for dynamic content updates
+
+## How to Run
+1. Navigate to the `uc03-ajax-enhanced-mpas` directory.
+2. Install dependencies:
+   ```sh
+   npm install
+```
 
 ## Benefits
 
