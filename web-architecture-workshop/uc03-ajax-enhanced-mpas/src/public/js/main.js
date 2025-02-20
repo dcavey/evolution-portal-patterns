@@ -23,9 +23,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     productDiv.innerHTML = `
                         <h2>${product.name}</h2>
                         <p>Price: ${product.price}</p>
-                        <button class="button">Add to Cart</button>
+                        <button class="button add-to-cart" data-product-name="${product.name}">Add to Cart</button>
                     `;
                     productsContainer.appendChild(productDiv);
+                });
+
+                // Add event listeners to "Add to Cart" buttons
+                const addToCartButtons = document.querySelectorAll('.add-to-cart');
+                addToCartButtons.forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const productName = event.target.getAttribute('data-product-name');
+                        console.log(`Adding ${productName} to cart`);
+                        
+                        // Provide feedback in the UX
+                        const cartMessage = document.getElementById('cart-message');
+                        cartMessage.textContent = `${productName} has been added to your cart.`;
+                        cartMessage.style.display = 'block';
+                        
+                        // Optionally, hide the message after a few seconds
+                        setTimeout(() => {
+                            cartMessage.style.display = 'none';
+                        }, 3000);
+                    });
                 });
             })
             .catch(error => console.error('Error fetching products:', error));
