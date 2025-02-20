@@ -1,0 +1,30 @@
+{
+  "name": "unified-spas",
+  "version": "1.0.0",
+  "description": "A unified single-page application integrating multiple modules into one cohesive application.",
+  "main": "src/js/app.js",
+  "scripts": {
+    "start": "node src/js/app.js",
+    "build": "webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "redux": "^4.1.0",
+    "react-redux": "^7.2.6"
+  },
+  "devDependencies": {
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1",
+    "babel-loader": "^8.2.3",
+    "babel-core": "^7.0.0",
+    "babel-preset-env": "^1.7.0"
+  },
+  "keywords": [
+    "SPA",
+    "unified",
+    "web architecture"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

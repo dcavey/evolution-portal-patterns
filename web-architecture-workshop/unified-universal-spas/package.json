@@ -1,0 +1,17 @@
+{
+  "name": "unified-universal-spas",
+  "version": "1.0.0",
+  "description": "A unified universal SPA that combines server-side rendering with client-side navigation.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "build": "echo 'Build script not defined'",
+    "test": "echo 'Test script not defined'"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "ejs": "^3.1.6"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}

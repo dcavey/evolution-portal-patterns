@@ -1,0 +1,59 @@
+User cases:
+
+1. Linked Pages (Traditional Multi-Page Applications)
+What it is: Every interaction leads to a full-page reload.
+How it works: The browser fetches a completely new HTML document from the server with each navigation.
+Characteristics:
+Clear separation of pages
+Minimal client-side interactivity
+Straightforward but can feel slow and disjointed
+
+2. Server Routing (Dynamic Server-Rendered Applications)
+What it is: Pages are generated dynamically on the server using routing logic.
+How it works: Although each navigation still results in a new full page load, the content is generated on the fly (e.g., via server-side templating).
+Characteristics:
+Dynamic content generation
+Maintains URL-based navigation
+Improved flexibility over static pages
+
+3. AJAX-Enhanced MPAs (Progressively Enhanced Interfaces)
+What it is: Early attempts to improve user experience without overhauling the full MPA model.
+How it works: Instead of reloading the whole page, parts of a page update asynchronously using AJAX calls.
+Characteristics:
+Partial page updates (e.g., live search, form submissions)
+Bridges traditional server-driven pages and full-blown SPAs
+Retains server routing for overall navigation but enhances interactivity
+
+4. Linked SPAs (Client-Side Rendered Single-Page Applications)
+What it is: Applications that load once and then handle navigation on the client side.
+How it works: Each “page” is actually a state or view within the SPA. When navigating between sections, JavaScript updates the UI without a full reload.
+Characteristics:
+Rich client-side interactivity
+Faster transitions between views
+However, switching between separate SPAs (if built as independent apps) still forces a full reload of that particular SPA
+
+5. Linked Universal SPAs (Isomorphic/Hybrid Independent SPAs)
+What it is: SPAs that can render on both the server and the client, linked together.
+How it works: Initial rendering happens on the server for faster load times and better SEO; subsequent interactions run on the client.
+Characteristics:
+Combines the SEO/performance benefits of server-side rendering (SSR) with the smooth experience of client-side navigation
+Maintains independent modules (each SPA is still separate, so navigating between them may trigger a reload of a new SPA)
+
+6. Unified SPA (Integrated Frontend Application)
+What it is: A single, cohesive SPA that houses all application modules.
+How it works: Instead of having distinct SPAs for different parts of a portal, all modules are integrated into one application shell that dynamically loads features as needed.
+Characteristics:
+Seamless navigation without any full reloads
+Shared state and UI consistency across modules
+Easier to deliver a unified user experience, though it may increase complexity in code organization
+
+7. Unified Universal SPA (Integrated, Isomorphic Application)
+What it is: The state-of-the-art approach combining a unified SPA with universal (server-side) rendering capabilities.
+How it works: The application renders its initial state on the server for performance and SEO, then hands off to the client for interactive, SPA-like behavior—all within a single integrated frontend.
+Characteristics:
+Fast initial load and excellent SEO
+Smooth, uninterrupted client-side navigation
+Ideal for complex, large-scale portals requiring both performance and interactivity
+
+Additional Note: The Role of Micro Frontends
+While not a separate “step” in this evolution, the micro frontends architectural style has emerged as a strategy to manage complexity in large applications. Whether you’re using linked SPAs or a unified SPA, breaking the UI into smaller, independently deployable pieces can help teams work in parallel and scale the application more effectively.
