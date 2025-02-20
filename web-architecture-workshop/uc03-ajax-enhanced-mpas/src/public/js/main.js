@@ -1,15 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded and parsed');
     
-    if (window.location.pathname === '/products.html') {
+    if (window.location.pathname === '/products') {
         console.log('Fetching products data');
         
         fetch('/api/products')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(products => {
                 console.log('Products data received:', products);
                 
                 const productsContainer = document.getElementById('products-container');
+                productsContainer.innerHTML = ''; // Clear any existing content
+                
                 products.forEach(product => {
                     const productDiv = document.createElement('div');
                     productDiv.className = 'product';
