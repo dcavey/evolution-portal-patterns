@@ -23,7 +23,8 @@ FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy the built Angular application from the build stage
-COPY --from=build /app/dist/spa3 /usr/share/nginx/html
+# Note the /browser addition to the path
+COPY --from=build /app/dist/spa3/browser /usr/share/nginx/html
 
 # Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf

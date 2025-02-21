@@ -1,0 +1,15 @@
+services:
+  spa1:
+    image: uc04-central-spa:latest
+    ports:
+      - "8081:80"
+
+  spa2:
+    image: uc04-orders-spa:latest
+    ports:
+      - "8082:80"
+
+  spa3:
+    image: uc04-deliveries-spa:latest
+    ports:
+      - "8083:80"

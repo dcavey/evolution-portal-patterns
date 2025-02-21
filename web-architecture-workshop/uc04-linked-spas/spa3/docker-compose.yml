@@ -1,5 +1,6 @@
 services:
   spa3:
     build: .
+    image: uc04-deliveries-spa:latest      
     ports:
       - "8083:80"

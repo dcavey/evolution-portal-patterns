@@ -1,5 +1,6 @@
 services:
   linked-spas:
     build: .
+    image: uc04-central-spa:latest
     ports:
       - "8081:80"

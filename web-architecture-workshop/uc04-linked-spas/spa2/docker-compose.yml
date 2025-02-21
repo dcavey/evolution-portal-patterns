@@ -1,5 +1,6 @@
 services:
   spa2:
     build: .
+    image: uc04-orders-spa:latest    
     ports:
       - "8082:80"
