@@ -12,13 +12,7 @@ interface LoadAppProps {
   name: string;
 }
 
-const isProd = process.env.NODE_ENV === 'production';
-const getBaseUrl = () => {
-  if (isProd) {
-    return process.env.PRODUCTION_DOMAIN || 'https://your-production-domain.com';
-  }
-  return process.env.DEV_DOMAIN || 'http://localhost:8081';
-};
+const getBaseUrl = () => 'http://localhost:8081';
 
 const applications = constructApplications({
   routes,
@@ -27,16 +21,18 @@ const applications = constructApplications({
       const baseUrl = getBaseUrl();
       
       switch (name) {
-        case "@simple-portals/angular-spa":PeriodicWave
+        case "@simple-portals/angular-spa":
           return import(
             /* webpackIgnore: true */ 
             `${baseUrl}/angular-spa/main.js`
+
           );
-        case "@simple-portals/react-spa":
+          /*
+          case "@simple-portals/react-spa":
           return import(
-            /* webpackIgnore: true */ 
+
             `${baseUrl}/react-spa/main.js`
-          );
+          );*/
         default:
           return import(/* webpackIgnore: true */ name);
       }
