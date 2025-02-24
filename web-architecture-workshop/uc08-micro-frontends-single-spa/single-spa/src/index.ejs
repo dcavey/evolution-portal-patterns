@@ -26,13 +26,12 @@
 
   <% if (isLocal) { %>
   <script type="injector-importmap">
-    {
-      "imports": {
-        "@engineering/root-config": "//localhost:9001/engineering-root-config.js",
-        "@single-spa/welcome": "https://cdn.jsdelivr.net/npm/single-spa-welcome/dist/single-spa-welcome.min.js"
+      {
+        "imports": {
+          "@engineering/root-config": "//localhost:9001/engineering-root-config.js"
+         }
       }
-    }
-  </script>
+    </script>
   <% } %>
 
   <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@5.1.1/dist/import-map-overrides.js"></script>
