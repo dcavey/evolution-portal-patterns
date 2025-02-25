@@ -11,31 +11,22 @@
   <!-- More info at https://github.com/single-spa/import-map-overrides/blob/main/docs/configuration.md#domain-list -->
   <!-- <meta name="import-map-overrides-domains" content="denylist:prod.example.com" /> -->
 
-  <!-- Shared dependencies go into this import map -->
+  <script src="https://cdn.jsdelivr.net/npm/systemjs@6.12.1/dist/system.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@5.1.1/dist/import-map-overrides.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@single-spa/import-map-injector@2.0.1/lib/import-map-injector.js"></script>
+  
   <script type="injector-importmap">
     {
       "imports": {
+        "@engineering/root-config": "//localhost:9001/engineering-root-config.js",
+        "@simple-portals/angular-spa": "http://localhost:8001/angular-spa.js",
+        "@simple-portals/react-spa": "http://localhost:8101/react-spa.js",
         "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@6.0.3/lib/es2015/esm/single-spa.min.js"
       }
     }
   </script>
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/single-spa@6.0.3/lib/es2015/esm/single-spa.min.js" as="module">
 
-  <!-- Add your organization's prod import map URL to this script's src  -->
-  <!-- <script type="injector-importmap" src="/importmap.json"></script> -->
-
-  <% if (isLocal) { %>
-  <script type="injector-importmap">
-      {
-        "imports": {
-          "@engineering/root-config": "//localhost:9001/engineering-root-config.js"
-         }
-      }
-    </script>
-  <% } %>
-
-  <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@5.1.1/dist/import-map-overrides.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@single-spa/import-map-injector@2.0.1/lib/import-map-injector.js"></script>
 </head>
 <body>
   <noscript>

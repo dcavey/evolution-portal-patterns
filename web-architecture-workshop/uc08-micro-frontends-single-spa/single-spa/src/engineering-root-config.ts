@@ -1,5 +1,8 @@
 import { registerApplication, start } from "single-spa";
-import microfrontendLayout from "./microfrontend-layout";
+
+
+import microfrontendLayout from "./microfrontend-layout.html";
+
 // switch to using .ts file instead of import microfrontendLayout from "./microfrontend-layout.html";
 import "regenerator-runtime/runtime";
 
@@ -19,9 +22,9 @@ interface LoadAppProps {
 const getBaseUrl = (name: string) => {
   switch (name) {
     case "@simple-portals/angular-spa":
-      return "http://localhost:8081";
+      return "http://localhost:8001";
     case "@simple-portals/react-spa":
-      return "http://localhost:8082";
+      return "http://localhost:8101";
    default:
       return "http://localhost:9001"; // Default root config host
   }
@@ -33,7 +36,7 @@ const applications = constructApplications({
   loadApp: async ({ name }: LoadAppProps) => {
     try {
       const baseUrl = getBaseUrl(name);
-      return import(/* webpackIgnore: true */ `${baseUrl}/${name}/main.js`);
+      return import(/* webpackIgnore: true */ `${baseUrl}/main.js`);
     } catch (error) {
       console.error(`Failed to load micro frontend: ${name}`, error);
       throw error;
