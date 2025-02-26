@@ -13,6 +13,7 @@ module.exports = (webpackConfigEnv, argv) => {
   });
 
   return merge(defaultConfig, {
+    
     module: {
       rules: [
         // Ensure Babel handles .ts and .tsx files
